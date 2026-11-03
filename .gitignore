@@ -1,0 +1,16 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+# Runtime state (papers trading books, killswitch, logs). Not tracked.
+state/
+logs/
+.DS_Store
+
+# Xcode / XcodeGen. NexusCorp.xcodeproj is generated from project.yml by
+# `make generate`; it is not tracked.
+.build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+NexusCorp.xcodeproj/

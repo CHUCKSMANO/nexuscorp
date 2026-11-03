@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>NexusCorp — The Token Yielder</title>
+  <meta name="description" content="NexusCorp autonomous yield, finder and copy-trade desk. Paper mode.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/console/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E1015'/%3E%3Cpath d='M9 23V9l14 14V9' stroke='%238B5CF6' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">N</span>
+      <div class="brand-text">
+        <strong>NEXUS<span>CORP</span></strong>
+        <small>The Token Yielder</small>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="pill" id="mode-pill">PAPER</span>
+      <span class="pill pill-muted" id="frozen-pill">OPERATIONAL</span>
+      <span class="stamp">Updated <span id="updated-at">—</span></span>
+      <button class="btn btn-ghost" data-action="refresh" title="Refresh now">Refresh</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Portfolio summary">
+      <div class="stat">
+        <span class="stat-label">Net asset value</span>
+        <strong class="stat-value" id="stat-nav">—</strong>
+        <span class="stat-sub" id="stat-nav-sub">paper book</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Idle capital</span>
+        <strong class="stat-value" id="stat-idle">—</strong>
+        <span class="stat-sub">across desks</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Deployed</span>
+        <strong class="stat-value" id="stat-deployed">—</strong>
+        <span class="stat-sub">in positions</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Yield / day</span>
+        <strong class="stat-value accent" id="stat-perday">—</strong>
+        <span class="stat-sub">paper accrual</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Lifetime yield</span>
+        <strong class="stat-value accent" id="stat-lifetime">—</strong>
+        <span class="stat-sub">since inception</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Open positions</span>
+        <strong class="stat-value" id="stat-positions">—</strong>
+        <span class="stat-sub">trade + copy</span>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Desks">
+      <article class="card">
+        <div class="card-head">
+          <h2>Yield desk</h2>
+          <span class="tag" id="yield-tag">—</span>
+        </div>
+        <div class="card-body" id="yield-body">
+          <div class="skeleton"></div>
+        </div>
+        <div class="card-foot">
+          <button class="btn btn-primary" data-action="tick">Run tick</button>
+          <span class="hint" id="yield-hint">rebalance only past edge threshold</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h2>Finder desk</h2>
+          <span class="tag" id="finder-tag">—</span>
+        </div>
+        <div class="card-body" id="finder-body">
+          <div class="skeleton"></div>
+        </div>
+        <div class="card-foot">
+          <button class="btn" data-action="finder-scan">Scan now</button>
+          <span class="hint">alerts only</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h2>Copy desk</h2>
+          <span class="tag" id="copy-tag">—</span>
+        </div>
+        <div class="card-body" id="copy-body">
+          <div class="skeleton"></div>
+        </div>
+        <form class="inline-form" id="follow-form">
+          <input type="text" id="follow-address" placeholder="Solana wallet address" autocomplete="off" spellcheck="false" aria-label="Solana wallet address">
+          <input type="text" id="follow-label" placeholder="Label (optional)" autocomplete="off" aria-label="Wallet label">
+          <button class="btn btn-primary" type="submit">Follow</button>
+        </form>
+        <div class="card-foot">
+          <button class="btn" data-action="copy-scan">Scan followed</button>
+          <span class="hint" id="copy-hint">paper replication</span>
+        </div>
+      </article>
+
+      <article class="card card-wide">
+        <div class="card-head">
+          <h2>Trade desk</h2>
+          <span class="tag" id="trade-tag">—</span>
+        </div>
+        <div class="card-body" id="trade-body">
+          <div class="skeleton"></div>
+        </div>
+        <form class="inline-form" id="quote-form">
+          <input type="text" id="quote-input" placeholder="Search token by symbol or mint" autocomplete="off" spellcheck="false" aria-label="Token symbol or mint">
+          <button class="btn" type="submit">Quote</button>
+        </form>
+        <div class="quote-result" id="quote-result" hidden></div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h2>Wallet</h2>
+          <span class="tag" id="wallet-tag">—</span>
+        </div>
+        <div class="card-body" id="wallet-body">
+          <div class="skeleton"></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h2>Ops / killswitch</h2>
+          <span class="tag" id="ops-tag">—</span>
+        </div>
+        <div class="card-body" id="ops-body">
+          <div class="skeleton"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span>NexusCorp · paper mode — no real funds move.</span>
+    <span>Sources: DefiLlama · DexScreener · Solana RPC</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/console/app.js"></script>
+</body>
+</html>
